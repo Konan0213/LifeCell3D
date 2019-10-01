@@ -44,7 +44,7 @@ namespace LifeCell3D
         {
             g.DrawLine(axesBrush, 250, 250, 500, 250); // ось Х
             g.DrawLine(axesBrush, 250, 250, 250, 1); // ось Y
-            g.DrawLine(axesBrush, 250, 250, 215, 250); // ось Z    
+            g.DrawLine(axesBrush, 250, 250, X1(0,0,50), Y1(0,0,50)); // ось Z    
 
 
 
@@ -82,8 +82,8 @@ namespace LifeCell3D
 
         {
             x++;
-            int y = (int)(Math.Cos(Math.PI / 180 * x) * 200);
-            int z = (int)(Math.Sin(Math.PI / 180 * x) * 200);
+            int z = 20;
+            int y = (int)(Math.Sin(Math.PI / 180 * x*10) * 50);
             
 
 
