@@ -19,8 +19,8 @@ namespace LifeCell3D
         public static Pen axesBrush;
 
         public static int x = 0;
-        public static int y = 0;
-        public static int z = 0;
+        //public static int y = 0;
+        //public static int z = 0;
 
         public static int MaxXYZ = 250;
 
@@ -54,35 +54,46 @@ namespace LifeCell3D
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            MatrixTest(ref x, ref y, ref z);
+            MatrixTest();
+            
+
         }
+
+        static int X1 (int x, int y, int z) 
+
+        {return (int) (MaxXYZ + 5 * (x - 0.7 * z)); }
+
+        static int Y1(int x, int y, int z)
+
+        {return (int) (MaxXYZ - 5 * (y - 0.7 * z));}
 
         static void CreateDot(int x, int y, int z, Boolean onoff)
 
         {
 
-            int X1 = MaxXYZ + 5 * ((int)(x + 0.7 * z));
-            int Y1 = MaxXYZ - 5 * ((int)(y + 0.7 * z));
+            if (onoff) g.FillEllipse(redBrush, X1(x,y,z), Y1(x,y,z), 5, 5);
 
-            if (onoff) g.FillEllipse(redBrush, X1, Y1, 5, 5);
-
-            else g.FillEllipse(neutralBrush, X1, Y1, 5, 5);
+            else g.FillEllipse(neutralBrush, X1(x, y, z), Y1(x, y, z), 5, 5);
 
 
         }
 
-        static void MatrixTest(ref int x, ref int y, ref int z)
+        static void MatrixTest()
 
         {
+            x++;
+            int y = (int)(Math.Cos(Math.PI / 180 * x) * 200);
+            int z = (int)(Math.Sin(Math.PI / 180 * x) * 200);
+            
+
+
 
             if ((x > 250) || (y > 250) || (z > 250)) return;
 
             CreateDot(x, y, z, true);
 
-            x++;
-            y++;
-            z++;
-
+            
+            
 
 
 
