@@ -82,8 +82,13 @@ namespace LifeCell3D
 
         {
             x++;
-            int z = 20;
-            int y = (int)(Math.Sin(Math.PI / 180 * x*10) * 50);
+            //int z = 20;
+            //int y = (int)(Math.Sin(Math.PI / 180 * x*10) * 50);
+            int z;
+            int y   ;
+            z = y = x;
+
+
             
 
 
@@ -101,7 +106,7 @@ namespace LifeCell3D
         }
 
 
-
+        // тест
 
     }
 
