@@ -31,13 +31,13 @@ namespace LifeCell3D
 
         public static int MaxXYZ = 250;
 
-        public static int max = 20;
+        public static int max = 40;
 
         public static int qBorn = 3;
 
-        public static int qDead = 8;
+        public static int qDead = 9;
 
-        public static int procent = 90;
+        public static int procent = 95;
 
 
         public static Cell [,,] Matrix = new Cell [max,max,max]; // трехмерный массив структур Cell размерностями max
@@ -122,11 +122,11 @@ namespace LifeCell3D
 
         static int X1 (int x, int y, int z) 
 
-        {return (int) (MaxXYZ + 5 * (x - 0.7 * z)); }
+        {return (int) (MaxXYZ + 5 * (x -  0.6* z)); }
 
         static int Y1(int x, int y, int z)
 
-        {return (int) (MaxXYZ - 5 * (y - 0.7 * z));}
+        {return (int) (MaxXYZ - 5 * (y - 0.6 * z));}
 
         static void CreateDot(int x, int y, int z, Boolean onoff)
 
@@ -158,7 +158,7 @@ namespace LifeCell3D
 
                         if ((quant < qBorn - 1) || (quant >= qDead)) whoThere = false; // одиночество или перенаселение с учетом в количестве самой центральной ячейки
 
-                        if (quant >= qBorn) whoThere = true; // если количество больше , то размножение
+                        if ((quant >= qBorn) && (quant < qDead)) whoThere = true; // если количество больше , то размножение
 
                         // если не подпало ни под одно из условий - новый статус приравнивается к старому, whoThere не меняется
                         
@@ -173,6 +173,9 @@ namespace LifeCell3D
                 {
                     for (int x = 1; x < max - 1; x++)
                     {
+
+                       
+
                         whoThere = Matrix[x, y, z].nextStatus;
 
                         CreateDot(x, y, z, whoThere);
@@ -191,7 +194,7 @@ namespace LifeCell3D
         {
             int quantity = 0;
 
-            if (Matrix[x, y, z].currentStatus) quantity--; // саму себя не считаем соседом
+            if (Matrix[x, y, z].currentStatus) quantity = -1; // саму себя не считаем соседом
 
             for (int zz = z - 1; zz < z + 2; zz++)
             {
