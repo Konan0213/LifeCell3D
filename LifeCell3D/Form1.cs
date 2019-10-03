@@ -87,7 +87,11 @@ namespace LifeCell3D
                                 Matrix[x, y, z].currentStatus = true;
                                 CreateDot(x, y, z, true);
                             }
+
+                            else Matrix[x, y, z].currentStatus = false;  // надо, не надо - хз
                         }
+
+
                     }
 
                 }
@@ -138,8 +142,8 @@ namespace LifeCell3D
         static void Life(int gen)
 
         {
-            int quant;
-            Boolean whoThere;
+            int quant; // количество в окрестности Мура
+            Boolean whoThere; // статус текущей ячейки
             
 
             for (int z = 1; z < max-1; z++)  // первый обход массива, оценка ситуации, перекладка значений
