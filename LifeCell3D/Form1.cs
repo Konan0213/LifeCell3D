@@ -52,7 +52,7 @@ namespace LifeCell3D
             neutralBrush = new SolidBrush(this.BackColor);
             axesBrush = new Pen(Color.Black, 3);
 
-            g = this.CreateGraphics();
+            
 
             generation = 0;
 
@@ -61,7 +61,7 @@ namespace LifeCell3D
 
         private void Form1_Load(object sender, EventArgs e)
         {
-                  
+            g = this.CreateGraphics();
 
         }
 
