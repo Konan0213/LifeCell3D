@@ -74,13 +74,13 @@ namespace LifeCell3D
                 g.DrawLine(axesBrush, 250, 250, 250, 1); // ось Y
                 g.DrawLine(axesBrush, 250, 250, X1(0, 0, 50), Y1(0, 0, 50)); // ось Z  
 
-                for (int z = 1; z < max-1; z++)  // инициализация массива заполнением полей
+                for (int z = 0; z < max; z++)  // инициализация массива заполнением полей
                 {
-                    for (int y = 1; y < max-1; y++)
+                    for (int y = 0; y < max; y++)
                     {
-                        for (int x = 1; x < max-1; x++)
+                        for (int x = 0; x < max; x++)
                         {
-                            double r = rnd.Next(0, 100);
+                            Single r = rnd.Next(0, 100);
 
                             if (r > procent)
                             {
@@ -88,17 +88,17 @@ namespace LifeCell3D
                                 CreateDot(x, y, z, true);
                             }
 
-                            else Matrix[x, y, z].currentStatus = false;  // надо, не надо - хз
+                            // else Matrix[x, y, z].currentStatus = false;  // надо, не надо - хз
                         }
 
 
                     }
 
                 }
-                generation = 1;
+                
             }
 
-            
+            generation = 1;
 
             if (timer1.Enabled == true) timer1.Enabled = false;
             else timer1.Enabled = true;
@@ -109,13 +109,13 @@ namespace LifeCell3D
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            Gen1.Text = Convert.ToString(generation);
+            
 
            
 
             Life(generation);
             generation++;
-            
+            Gen1.Text = Convert.ToString(generation);
 
 
         }
@@ -146,11 +146,11 @@ namespace LifeCell3D
             Boolean whoThere; // статус текущей ячейки
             
 
-            for (int z = 1; z < max-1; z++)  // первый обход массива, оценка ситуации, перекладка значений
+            for (int z = 0; z < max; z++)  // первый обход массива, оценка ситуации, перекладка значений
             {
-                for (int y = 1; y < max-1; y++)
+                for (int y = 0; y < max; y++)
                 {
-                    for (int x = 1; x < max-1; x++)
+                    for (int x = 0; x < max; x++)
                     {                  
                         whoThere = Matrix[x, y, z].currentStatus;
 
@@ -167,11 +167,11 @@ namespace LifeCell3D
                 }
             }
 
-            for (int z = 1; z < max - 1; z++)  // второй обход массива
+            for (int z = 0; z < max; z++)  // второй обход массива
             {
-                for (int y = 1; y < max - 1; y++)
+                for (int y = 0; y < max; y++)
                 {
-                    for (int x = 1; x < max - 1; x++)
+                    for (int x = 0; x < max; x++)
                     {
 
                        
@@ -200,13 +200,15 @@ namespace LifeCell3D
             {
                 for (int yy = y - 1; yy < y + 2; yy++)
                 {
-                    for (int xx = x - 1; xx < x +2; xx++)
+                    for (int xx = x - 1; xx < x + 2; xx++)
                     {
 
-                        // if ((xx >= 0) && (xx < max) && (yy >= 0) && (yy < max) && (zz >= 0) && (zz < max)) // координаты в диапазоне
-                        //{ if (Matrix[xx, yy, zz].current) quantity++; } // ячейка заполнена
+                        if ((xx >= 0) && (xx < max) && (yy >= 0) && (yy < max) && (zz >= 0) && (zz < max)) // координаты в диапазоне
+                        {
+                            if (Matrix[xx, yy, zz].currentStatus) quantity++;
+                        }     // ячейка заполнена
 
-                        if (Matrix[xx, yy, zz].currentStatus) quantity++; // ячейка заполнена
+                        //  if (Matrix[xx, yy, zz].currentStatus) quantity++; // ячейка заполнена
                     }
                 }
             }
