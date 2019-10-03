@@ -54,7 +54,7 @@ namespace LifeCell3D
 
             
 
-            generation = 0;
+            
 
             
         }
@@ -62,17 +62,19 @@ namespace LifeCell3D
         private void Form1_Load(object sender, EventArgs e)
         {
             g = this.CreateGraphics();
-
+            generation = 0;
         }
 
         private void Form1_Click(object sender, EventArgs e)
         {
 
-            if ( generation == 0)
-            {
+           
                 g.DrawLine(axesBrush, 250, 250, 500, 250); // ось Х
                 g.DrawLine(axesBrush, 250, 250, 250, 1); // ось Y
                 g.DrawLine(axesBrush, 250, 250, X1(0, 0, 50), Y1(0, 0, 50)); // ось Z  
+
+            if (generation == 0)
+            {
 
                 for (int z = 0; z < max; z++)  // инициализация массива заполнением полей
                 {
