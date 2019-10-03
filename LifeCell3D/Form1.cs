@@ -87,7 +87,7 @@ namespace LifeCell3D
                             if (r > procent)
                             {
                                 Matrix[x, y, z].currentStatus = true;
-                                CreateDot(x, y, z, true);
+                                //CreateDot(x, y, z, true);
                             }
 
                             // else Matrix[x, y, z].currentStatus = false;  // надо, не надо - хз
@@ -113,7 +113,7 @@ namespace LifeCell3D
         {
             
 
-           
+            
 
             Life(generation);
             generation++;
@@ -153,8 +153,15 @@ namespace LifeCell3D
                 for (int y = 0; y < max; y++)
                 {
                     for (int x = 0; x < max; x++)
-                    {                  
+
+                     {
+
+                        
+
+
                         whoThere = Matrix[x, y, z].currentStatus;
+
+                        CreateDot(x, y, z, whoThere);
 
                         quant = NeighborQuantity(x, y, z);                                                  
 
@@ -180,7 +187,7 @@ namespace LifeCell3D
 
                         whoThere = Matrix[x, y, z].nextStatus;
 
-                        CreateDot(x, y, z, whoThere);
+                        // CreateDot(x, y, z, whoThere);
 
                         Matrix[x, y, z].currentStatus = whoThere; // новый статус закрепляется как действующий
                     }
