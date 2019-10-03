@@ -31,16 +31,16 @@ namespace LifeCell3D
 
         public static int MaxXYZ = 250;
 
-        public static int max = 30;
+        public static int max = 20;
 
         public static int qBorn = 3;
 
-        public static int qDead = 4;
+        public static int qDead = 8;
 
-        public static int procent = 10;
+        public static int procent = 90;
 
 
-        public static Cell [,,] Matrix = new Cell [max,max,max]; // трехмерный массив класса Cell размерностями max
+        public static Cell [,,] Matrix = new Cell [max,max,max]; // трехмерный массив структур Cell размерностями max
 
         public Random rnd = new Random();
 
@@ -74,7 +74,7 @@ namespace LifeCell3D
                 g.DrawLine(axesBrush, 250, 250, 250, 1); // ось Y
                 g.DrawLine(axesBrush, 250, 250, X1(0, 0, 50), Y1(0, 0, 50)); // ось Z  
 
-                for (int z = 1; z < max-1; z++)  // инициализация массива заполнением 0,01 полей
+                for (int z = 1; z < max-1; z++)  // инициализация массива заполнением полей
                 {
                     for (int y = 1; y < max-1; y++)
                     {
@@ -84,10 +84,8 @@ namespace LifeCell3D
 
                             if (r > procent)
                             {
-                                Matrix[x, y, z] = new Cell (1);
-
+                                Matrix[x, y, z].currentStatus = true;
                                 CreateDot(x, y, z, true);
-
                             }
                         }
                     }
@@ -144,66 +142,52 @@ namespace LifeCell3D
             Boolean whoThere;
             
 
-            for (int z = 1; z < max-1; z++)  // обход массива
+            for (int z = 1; z < max-1; z++)  // первый обход массива, оценка ситуации, перекладка значений
             {
                 for (int y = 1; y < max-1; y++)
                 {
                     for (int x = 1; x < max-1; x++)
                     {                  
+                        whoThere = Matrix[x, y, z].currentStatus;
+
+                        quant = NeighborQuantity(x, y, z);                                                  
+
+                        if ((quant < qBorn - 1) || (quant >= qDead)) whoThere = false; // одиночество или перенаселение с учетом в количестве самой центральной ячейки
+
+                        if (quant >= qBorn) whoThere = true; // если количество больше , то размножение
+
+                        // если не подпало ни под одно из условий - новый статус приравнивается к старому, whoThere не меняется
                         
-                        whoThere = Matrix[x, y, z].current;
-
-                        quant = NeighborQuantity(x, y, z);
-                                                  
-
-                            if (whoThere)
-                            {
-                                if ((quant < qBorn - 1) || (quant >= qDead)) // одиночество или перенаселение с учетом в количестве самой центральной ячейки
-                                {
-
-                                    whoThere = false;
-                                    // Matrix[x, y, z].newest = false;
-                                    CreateDot(x, y, z, false);
-
-                                }
-                            }
-
-                            else
-                            {
-                                if (quant >= qBorn)  // если количество больше , то размножение
-
-                                {
-                                    whoThere = true;
-                                    // Matrix[x, y, z].newest = true;
-                                    CreateDot(x, y, z, true);
-
-                                }
-                            }
-
-                            Matrix[x, y, z].newCur(); // в следующий проход новоназначенное состояние ячейки станет текущим
-                            Matrix[x, y, z].newest = whoThere;
-
-
-
+                        Matrix[x, y, z].nextStatus = whoThere; // в следующий проход новоназначенное состояние ячейки станет текущим и должно быть отображено
                     }
+                }
+            }
 
+            for (int z = 1; z < max - 1; z++)  // второй обход массива
+            {
+                for (int y = 1; y < max - 1; y++)
+                {
+                    for (int x = 1; x < max - 1; x++)
+                    {
+                        whoThere = Matrix[x, y, z].nextStatus;
+
+                        CreateDot(x, y, z, whoThere);
+
+                        Matrix[x, y, z].currentStatus = whoThere; // новый статус закрепляется как действующий
+                    }
                 }
 
             }
 
-
-
-
-
-
         }
+                                         
 
         static int NeighborQuantity(int x, int y, int z)
 
         {
             int quantity = 0;
 
-            if (Matrix[x, y, z].current) quantity--; // саму себя не считаем соседом
+            if (Matrix[x, y, z].currentStatus) quantity--; // саму себя не считаем соседом
 
             for (int zz = z - 1; zz < z + 2; zz++)
             {
@@ -215,17 +199,12 @@ namespace LifeCell3D
                         // if ((xx >= 0) && (xx < max) && (yy >= 0) && (yy < max) && (zz >= 0) && (zz < max)) // координаты в диапазоне
                         //{ if (Matrix[xx, yy, zz].current) quantity++; } // ячейка заполнена
 
-                        if (Matrix[xx, yy, zz].current) quantity++; // ячейка заполнена
+                        if (Matrix[xx, yy, zz].currentStatus) quantity++; // ячейка заполнена
                     }
                 }
             }
 
             return quantity;
-
-
-
         }
-
-        
     }
 }
