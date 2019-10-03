@@ -18,17 +18,33 @@ namespace LifeCell3D
         public static SolidBrush neutralBrush;
         public static Pen axesBrush;
 
-        public static int generation; // Отсчет поколений
+        public struct Cell
 
-       // public static int x = 0;
-        //public static int y = 0;
-        //public static int z = 0;
+        {
+            public Boolean current;
+            public Boolean newest;
+
+            public void newCur()
+            {
+                this.newest = this.current;
+            }
+
+        }
+
+        public static int generation; // Отсчет поколений
 
         public static int MaxXYZ = 250;
 
-        public static int max = 20;
+        public static int max = 30;
 
-        public static Boolean [,,] Matrix = new Boolean [max,max,max]; // трехмерный массив размерностями max
+        public static int qBorn = 3;
+
+        public static int qDead = 6;
+
+        public static int procent = 95;
+
+
+        public static Cell [,,] Matrix = new Cell [max,max,max]; // трехмерный массив структур Cell размерностями max
 
         public Random rnd = new Random();
 
@@ -76,10 +92,10 @@ namespace LifeCell3D
 
                             double r = rnd.Next(0, 100);
 
-                            if (r > 90)
+                            if (r > procent)
 
                             {
-                                Matrix[x, y, z] = true;
+                                Matrix[x, y, z].current = true;
 
                                 CreateDot(x, y, z, true);
 
@@ -102,11 +118,16 @@ namespace LifeCell3D
 
             if (timer1.Enabled == true) timer1.Enabled = false;
             else timer1.Enabled = true;
+
+            
         }
+
 
         private void timer1_Tick(object sender, EventArgs e)
         {
             Gen1.Text = Convert.ToString(generation);
+
+           
 
             Life(generation);
             generation++;
@@ -139,25 +160,30 @@ namespace LifeCell3D
         {
             int quant;
             Boolean whoThere;
+            Boolean convertation;
 
             for (int z = 0; z < max; z++)  // обход массива
             {
                 for (int y = 0; y < max; y++)
                 {
                     for (int x = 0; x < max; x++)
-                    {
-                       
-                            whoThere = Matrix[x, y, z];
-
-                            quant = NeighborQuantity(x, y, z);
+                    {                  
                         
+                        whoThere = Matrix[x, y, z].current;
+
+                        convertation = whoThere;
+
+                        quant = NeighborQuantity(x, y, z);
+                                                  
 
                             if (whoThere)
                             {
                                 quant--; // вычитаем из пространства Мура саму центральную ячейку
-                                if ((quant < 6) || (quant > 9)) // одиночество или перенаселение с учетом в количестве самой центральной ячейки
+                                if ((quant < qBorn - 1) || (quant >= qDead)) // одиночество или перенаселение с учетом в количестве самой центральной ячейки
                                 {
-                                    Matrix[x, y, z] = false;
+
+                                    convertation = false;
+                                    // Matrix[x, y, z].newest = false;
                                     CreateDot(x, y, z, false);
 
                                 }
@@ -165,14 +191,20 @@ namespace LifeCell3D
 
                             else
                             {
-                                if (quant > 3)  // если количество больше единицы, то размножение
+                                if (quant >= qBorn)  // если количество больше , то размножение
 
                                 {
-                                    Matrix[x, y, z] = true;
+                                    convertation = true;
+                                    // Matrix[x, y, z].newest = true;
                                     CreateDot(x, y, z, true);
 
                                 }
                             }
+
+                            Matrix[x, y, z].newCur(); // в следующий проход новоназначенное состояние ячейки станет текущим
+                            Matrix[x, y, z].newest = convertation;
+
+
 
                     }
 
@@ -192,6 +224,8 @@ namespace LifeCell3D
         {
             int quantity = 0;
 
+            
+
             for (int zz = z - 1; zz < z + 2; zz++)
 
             {
@@ -203,7 +237,7 @@ namespace LifeCell3D
                     {
 
                         if ((xx >= 0) && (xx < max) && (yy >= 0) && (yy < max) && (zz >= 0) && (zz < max)) // координаты в диапазоне
-                        { if (Matrix[xx, yy, zz]) quantity++; } // ячейка заполнена
+                        { if (Matrix[xx, yy, zz].current) quantity++; } // ячейка заполнена
                           
 
                     }
