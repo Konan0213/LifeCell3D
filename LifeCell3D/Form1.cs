@@ -18,11 +18,19 @@ namespace LifeCell3D
         public static SolidBrush neutralBrush;
         public static Pen axesBrush;
 
-        public static int x = 0;
+        public static int generation; // Отсчет поколений
+
+       // public static int x = 0;
         //public static int y = 0;
         //public static int z = 0;
 
         public static int MaxXYZ = 250;
+
+        public static int max = 50;
+
+        public static Boolean [,,] Matrix = new Boolean [max,max,max]; // трехмерный массив размерностями max
+
+        public Random rnd = new Random();
 
 
         public Form1()
@@ -33,29 +41,73 @@ namespace LifeCell3D
             axesBrush = new Pen(Color.Black, 3);
 
             g = this.CreateGraphics();
+
+            
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
+                  
 
         }
 
         private void Form1_Click(object sender, EventArgs e)
         {
-            g.DrawLine(axesBrush, 250, 250, 500, 250); // ось Х
-            g.DrawLine(axesBrush, 250, 250, 250, 1); // ось Y
-            g.DrawLine(axesBrush, 250, 250, X1(0,0,50), Y1(0,0,50)); // ось Z    
+
+            if (timer1.Enabled == false)
+            {
+                g.DrawLine(axesBrush, 250, 250, 500, 250); // ось Х
+                g.DrawLine(axesBrush, 250, 250, 250, 1); // ось Y
+                g.DrawLine(axesBrush, 250, 250, X1(0, 0, 50), Y1(0, 0, 50)); // ось Z  
+
+                for (int z = 0; z < max; z++)  // инициализация массива заполнением 0,01 полей
+
+                {
+
+                    for (int y = 0; y < max; y++)
+
+                    {
+
+                        for (int x = 0; x < max; x++)
+
+                        {
+
+                            double r = rnd.Next(0, 100);
+
+                            if (r > 98)
+
+                            {
+                                Matrix[x, y, z] = true;
+
+                                CreateDot(x, y, z, true);
+
+                            }
 
 
 
-            if (timer1.Enabled == true) timer1.Enabled = false;
-            else timer1.Enabled = true;
+
+
+                        }
+
+                    }
+
+
+                }
+
+                generation = 1;
+            }
+
+            timer1.Enabled = true;
+
+
+           // if (timer1.Enabled == true) timer1.Enabled = false;
+            //else timer1.Enabled = true;
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            MatrixTest();
-            
+            Life(generation);
+            generation++;
 
         }
 
@@ -71,35 +123,75 @@ namespace LifeCell3D
 
         {
 
-            if (onoff) g.FillEllipse(redBrush, X1(x,y,z), Y1(x,y,z), 5, 5);
+            if (onoff) g.FillEllipse(redBrush, X1(x,y,z), Y1(x,y,z), 3, 3);
 
-            else g.FillEllipse(neutralBrush, X1(x, y, z), Y1(x, y, z), 5, 5);
+            else g.FillEllipse(neutralBrush, X1(x, y, z), Y1(x, y, z), 3, 3);
 
 
         }
 
-        static void MatrixTest()
+        static void Life(int gen)
 
         {
-            x++;
-            //int z = 20;
-            //int y = (int)(Math.Sin(Math.PI / 180 * x*10) * 50);
-            int z;
-            int y   ;
-            z = y = x;
+            for (int z = 0; z < max; z++)  // обход массива
+            {
+                for (int y = 0; y < max; y++)
+                {
+                    for (int x = 0; x < max; x++)
+                    {
+                       
+                        {
+                            Matrix[x, y, z] = true;
+
+                            CreateDot(x, y, z, true);
+
+                        }
 
 
-            
 
 
 
-            if ((x > 250) || (y > 250) || (z > 250)) return;
+                    }
 
-            CreateDot(x, y, z, true);
+                }
 
-            
-            
+            }
 
+
+
+
+
+
+        }
+
+        static int NeighborQuantity(int x, int y, int z)
+
+        {
+            int quantity = 0;
+
+            for (int zz = z - 1; zz < z + 2; zz++)
+
+            {
+                for (int yy = y - 1; yy < y + 2; yy++)
+
+                {
+                    for (int xx = x - 1; xx < x +2; xx++)
+
+                    {
+
+                        if ((xx >= 0) && (xx < max) && (yy >= 0) && (yy < max) && (zz >= 0) && (zz < max)) // координаты в диапазоне
+                        { if (Matrix[xx, yy, zz]) quantity++; } // ячейка заполнена
+                          
+
+                    }
+
+
+                }
+
+
+            }
+
+            return quantity;
 
 
 
@@ -109,6 +201,8 @@ namespace LifeCell3D
         // тест
 
         // тест 03.10 10:03
+
+        
 
     }
 
