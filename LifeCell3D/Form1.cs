@@ -133,6 +133,9 @@ namespace LifeCell3D
         static void Life(int gen)
 
         {
+            int quant;
+            Boolean whoThere;
+
             for (int z = 0; z < max; z++)  // обход массива
             {
                 for (int y = 0; y < max; y++)
@@ -140,12 +143,33 @@ namespace LifeCell3D
                     for (int x = 0; x < max; x++)
                     {
                        
-                        {
-                            Matrix[x, y, z] = true;
+                            whoThere = Matrix[x, y, z];
 
-                            CreateDot(x, y, z, true);
+                            quant = NeighborQuantity(x, y, z);
+                        
 
-                        }
+                            if (whoThere)
+                            {
+                                quant--; // вычитаем из пространства Мура саму центральную ячейку
+                                if ((quant < 2) || (quant > 3)) // одиночество или перенаселение с учетом в количестве самой центральной ячейки
+                                {
+                                    Matrix[x, y, z] = false;
+                                    CreateDot(x, y, z, false);
+
+                                }
+                            }
+
+                            else
+                            {
+                                if (quant > 1)  // если количество больше единицы, то размножение
+
+                                {
+                                    Matrix[x, y, z] = true;
+                                    CreateDot(x, y, z, true);
+
+                                }
+                            }                       
+                        
 
 
 
@@ -197,12 +221,6 @@ namespace LifeCell3D
 
         }
 
-
-        // тест
-
-        // тест 03.10 10:03
-
-        
 
     }
 
