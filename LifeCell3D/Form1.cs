@@ -26,7 +26,7 @@ namespace LifeCell3D
 
         public static int MaxXYZ = 250;
 
-        public static int max = 50;
+        public static int max = 20;
 
         public static Boolean [,,] Matrix = new Boolean [max,max,max]; // трехмерный массив размерностями max
 
@@ -54,7 +54,7 @@ namespace LifeCell3D
         private void Form1_Click(object sender, EventArgs e)
         {
 
-            if (timer1.Enabled == false)
+            if ( generation < 1)
             {
                 g.DrawLine(axesBrush, 250, 250, 500, 250); // ось Х
                 g.DrawLine(axesBrush, 250, 250, 250, 1); // ось Y
@@ -74,7 +74,7 @@ namespace LifeCell3D
 
                             double r = rnd.Next(0, 100);
 
-                            if (r > 98)
+                            if (r > 90)
 
                             {
                                 Matrix[x, y, z] = true;
@@ -93,21 +93,23 @@ namespace LifeCell3D
 
 
                 }
-
                 generation = 1;
             }
 
-            timer1.Enabled = true;
+            
 
-
-           // if (timer1.Enabled == true) timer1.Enabled = false;
-            //else timer1.Enabled = true;
+            if (timer1.Enabled == true) timer1.Enabled = false;
+            else timer1.Enabled = true;
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+            Gen1.Text = Convert.ToString(generation);
+
             Life(generation);
             generation++;
+            
+
 
         }
 
@@ -151,7 +153,7 @@ namespace LifeCell3D
                             if (whoThere)
                             {
                                 quant--; // вычитаем из пространства Мура саму центральную ячейку
-                                if ((quant < 2) || (quant > 3)) // одиночество или перенаселение с учетом в количестве самой центральной ячейки
+                                if ((quant < 6) || (quant > 9)) // одиночество или перенаселение с учетом в количестве самой центральной ячейки
                                 {
                                     Matrix[x, y, z] = false;
                                     CreateDot(x, y, z, false);
@@ -161,19 +163,14 @@ namespace LifeCell3D
 
                             else
                             {
-                                if (quant > 1)  // если количество больше единицы, то размножение
+                                if (quant > 3)  // если количество больше единицы, то размножение
 
                                 {
                                     Matrix[x, y, z] = true;
                                     CreateDot(x, y, z, true);
 
                                 }
-                            }                       
-                        
-
-
-
-
+                            }
 
                     }
 
@@ -221,7 +218,7 @@ namespace LifeCell3D
 
         }
 
-
+        
     }
 
 
