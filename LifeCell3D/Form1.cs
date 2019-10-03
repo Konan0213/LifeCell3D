@@ -21,13 +21,9 @@ namespace LifeCell3D
         public struct Cell
 
         {
-            public Boolean current;
-            public Boolean newest;
+            public Boolean currentGeneration;
 
-            public void newCur()
-            {
-                this.newest = this.current;
-            }
+            public Boolean nextGeneration;
 
         }
 
@@ -39,9 +35,9 @@ namespace LifeCell3D
 
         public static int qBorn = 3;
 
-        public static int qDead = 6;
+        public static int qDead = 4;
 
-        public static int procent = 50;
+        public static int procent = 10;
 
 
         public static Cell [,,] Matrix = new Cell [max,max,max]; // трехмерный массив структур Cell размерностями max
@@ -88,7 +84,7 @@ namespace LifeCell3D
 
                             if (r > procent)
                             {
-                                Matrix[x, y, z].current = true;
+                                Matrix[x, y, z].myGeneration = 1;
 
                                 CreateDot(x, y, z, true);
 
