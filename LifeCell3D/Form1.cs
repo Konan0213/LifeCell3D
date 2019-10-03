@@ -36,11 +36,13 @@ namespace LifeCell3D
         public Form1()
         {
             InitializeComponent();
-            redBrush = new SolidBrush(Color.Red);
+            redBrush = new SolidBrush(Color.Blue);
             neutralBrush = new SolidBrush(this.BackColor);
             axesBrush = new Pen(Color.Black, 3);
 
             g = this.CreateGraphics();
+
+            generation = 0;
 
             
         }
@@ -54,7 +56,7 @@ namespace LifeCell3D
         private void Form1_Click(object sender, EventArgs e)
         {
 
-            if ( generation < 1)
+            if ( generation == 0)
             {
                 g.DrawLine(axesBrush, 250, 250, 500, 250); // ось Х
                 g.DrawLine(axesBrush, 250, 250, 250, 1); // ось Y

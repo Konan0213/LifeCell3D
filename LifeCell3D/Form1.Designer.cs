@@ -42,10 +42,9 @@
             this.Gen1.AutoSize = true;
             this.Gen1.Location = new System.Drawing.Point(25, 428);
             this.Gen1.Name = "Gen1";
-            this.Gen1.Size = new System.Drawing.Size(59, 13);
+            this.Gen1.Size = new System.Drawing.Size(13, 13);
             this.Gen1.TabIndex = 0;
-            this.Gen1.Text = "Generation";
-          
+            this.Gen1.Text = "0";
             // 
             // Form1
             // 
