@@ -35,9 +35,9 @@ namespace LifeCell3D
 
         public static int qBorn = 3;
 
-        public static int qDead = 8;
+        public static int qDead = 3;
 
-        public static int procent = 90;
+        public static int procent = 1;
 
 
         public static Cell [,,] Matrix = new Cell [max,max,max]; // трехмерный массив структур Cell размерностями max
