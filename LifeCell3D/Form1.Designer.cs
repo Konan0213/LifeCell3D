@@ -35,6 +35,7 @@
             // 
             // timer1
             // 
+            this.timer1.Interval = 10;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // Gen1
@@ -44,7 +45,7 @@
             this.Gen1.Name = "Gen1";
             this.Gen1.Size = new System.Drawing.Size(13, 13);
             this.Gen1.TabIndex = 0;
-            this.Gen1.Text = "0";
+            this.Gen1.Text = "1";
             // 
             // Form1
             // 
@@ -53,7 +54,9 @@
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
             this.ClientSize = new System.Drawing.Size(484, 462);
             this.Controls.Add(this.Gen1);
+            this.Enabled = false;
             this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Form1";
