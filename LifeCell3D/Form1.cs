@@ -87,7 +87,7 @@ namespace LifeCell3D
                             if (r > procent)
                             {
                                 Matrix[x, y, z].currentStatus = true;
-                                //CreateDot(x, y, z, true);
+                                CreateDot(x, y, z, true);
                             }
 
                             // else Matrix[x, y, z].currentStatus = false;  // надо, не надо - хз
@@ -111,15 +111,15 @@ namespace LifeCell3D
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            
 
-            
+
+           
 
             Life(generation);
             generation++;
             Gen1.Text = Convert.ToString(generation);
 
-
+           
         }
 
         static int X1 (int x, int y, int z) 
@@ -137,6 +137,8 @@ namespace LifeCell3D
             if (onoff) g.FillEllipse(redBrush, X1(x,y,z), Y1(x,y,z), 3, 3);
 
             else g.FillEllipse(neutralBrush, X1(x, y, z), Y1(x, y, z), 3, 3);
+
+            
 
 
         }
