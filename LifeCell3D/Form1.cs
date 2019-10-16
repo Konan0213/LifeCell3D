@@ -8,6 +8,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using OpenTK;
+
+using OpenTK.Graphics.OpenGL;
+
+
+
+
+
+
+
 namespace LifeCell3D
 {
     public partial class Form1 : Form
@@ -21,9 +31,9 @@ namespace LifeCell3D
         public struct Cell
 
         { 
-            public Boolean currentStatus;
+            public bool currentStatus;
 
-            public Boolean nextStatus;
+            public bool nextStatus;
 
         }
 
@@ -130,7 +140,7 @@ namespace LifeCell3D
 
         {return (int) (MaxXYZ - 5 * (y - 0.6 * z));}
 
-        static void CreateDot(int x, int y, int z, Boolean onoff)
+        static void CreateDot(int x, int y, int z, bool onoff)
 
         {
 
@@ -147,7 +157,7 @@ namespace LifeCell3D
 
         {
             int quant; // количество в окрестности Мура
-            Boolean whoThere; // статус текущей ячейки
+            bool whoThere; // статус текущей ячейки
             
 
             for (int z = 0; z < max; z++)  // первый обход массива, оценка ситуации, перекладка значений
