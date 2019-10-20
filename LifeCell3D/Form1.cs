@@ -28,14 +28,7 @@ namespace LifeCell3D
         public static SolidBrush neutralBrush;
         public static Pen axesBrush;
 
-        public struct Cell
-
-        { 
-            public bool currentStatus;
-
-            public bool nextStatus;
-
-        }
+       
 
         public static int generation; // Отсчет поколений
 
@@ -49,24 +42,28 @@ namespace LifeCell3D
 
         public static int procent = 90;
 
+         public struct Cell
+
+        { 
+            public bool currentStatus;
+
+            public bool nextStatus;
+
+        }
+
 
         public static Cell [,,] Matrix = new Cell [max,max,max]; // трехмерный массив структур Cell размерностями max
 
         public Random rnd = new Random();
 
 
-        public Form1()
+        public Form1() // конструктор класса Form1
         {
             InitializeComponent();
             redBrush = new SolidBrush(Color.Blue);
             neutralBrush = new SolidBrush(this.BackColor);
             axesBrush = new Pen(Color.Black, 3);
-
-            
-
-            
-
-            
+                 
         }
 
         private void Form1_Load(object sender, EventArgs e)
