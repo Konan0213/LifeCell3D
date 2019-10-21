@@ -70,15 +70,20 @@ namespace LifeCell3D
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            g = this.CreateGraphics();
+            // g = this.CreateGraphics();
             generation = 0;
         }
 
         private void glControl1_Load(object sender, EventArgs e)
         {
-
+            loaded = true;// флажок "форма загружена"
         }
 
+        private void glControl1_Paint(object sender, PaintEventArgs e) // метод при открытии или изменении размеров
+        {
+            if (!loaded)  // если форма не загружена - выходим
+                return; 
+        }
 
 
 
