@@ -77,12 +77,27 @@ namespace LifeCell3D
         private void glControl1_Load(object sender, EventArgs e)
         {
             loaded = true;// флажок "форма загружена"
+
+            GL.ClearColor(Color.SkyBlue);
+            GL.Enable(EnableCap.DepthTest); // дальние к точке наблюдения элементы перекрываются ближними
+
+            Matrix4 p = Matrix4.CreatePerspectiveFieldOfView((float)(80 * Math.PI / 180), 1, 20, 500); // матрица Фруструма: 
+
+
+            GL.MatrixMode(MatrixMode.Projection);
+            GL.LoadMatrix(ref p);
+
+            Matrix4 modelview = Matrix4.LookAt(70, 70, 70, 0, 0, 0, 0, 1, 0);
+            GL.MatrixMode(MatrixMode.Modelview);
+            GL.LoadMatrix(ref modelview);
         }
 
         private void glControl1_Paint(object sender, PaintEventArgs e) // метод при открытии или изменении размеров
         {
             if (!loaded)  // если форма не загружена - выходим
-                return; 
+                return;
+
+            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit); // Переходим в режим проекции, и задаем эту матрицу
         }
 
 
