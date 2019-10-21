@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.Gen1 = new System.Windows.Forms.Label();
+            this.glControl1 = new OpenTK.GLControl();
             this.SuspendLayout();
             // 
             // timer1
@@ -47,12 +48,24 @@
             this.Gen1.TabIndex = 0;
             this.Gen1.Text = "1";
             // 
+            // glControl1
+            // 
+            this.glControl1.BackColor = System.Drawing.Color.Black;
+            this.glControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.glControl1.Location = new System.Drawing.Point(0, 0);
+            this.glControl1.Name = "glControl1";
+            this.glControl1.Size = new System.Drawing.Size(484, 462);
+            this.glControl1.TabIndex = 1;
+            this.glControl1.VSync = false;
+            this.glControl1.Load += new System.EventHandler(this.glControl1_Load);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.Disable;
             this.ClientSize = new System.Drawing.Size(484, 462);
+            this.Controls.Add(this.glControl1);
             this.Controls.Add(this.Gen1);
             this.DoubleBuffered = true;
             this.Enabled = false;
@@ -73,6 +86,7 @@
 
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Label Gen1;
+        private OpenTK.GLControl glControl1;
     }
 }
 

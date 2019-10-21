@@ -56,10 +56,12 @@ namespace LifeCell3D
 
         public Random rnd = new Random();
 
+        bool loaded = false; // флажок загрузки окна
+
 
         public Form1() // конструктор класса Form1
         {
-            InitializeComponent();
+            InitializeComponent();  // оставляем
             redBrush = new SolidBrush(Color.Blue);
             neutralBrush = new SolidBrush(this.BackColor);
             axesBrush = new Pen(Color.Black, 3);
@@ -71,6 +73,14 @@ namespace LifeCell3D
             g = this.CreateGraphics();
             generation = 0;
         }
+
+        private void glControl1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+
+
 
         private void Form1_Click(object sender, EventArgs e)
         {
@@ -233,5 +243,7 @@ namespace LifeCell3D
 
             return quantity;
         }
+
+       
     }
 }
