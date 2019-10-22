@@ -34,13 +34,13 @@ namespace LifeCell3D
 
         public static int MaxXYZ = 250;
 
-        public static int max = 40;
+        public static int max = 5;
 
         public static int qBorn = 2;
 
         public static int qDead = 8;
 
-        public static int procent = 90;
+        public static int procent = 5;
 
          public struct Cell
 
@@ -98,6 +98,9 @@ namespace LifeCell3D
                 return;
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit); // Переходим в режим проекции, и задаем эту матрицу
+
+            glControl1.SwapBuffers();
+
         }
 
 
@@ -105,42 +108,45 @@ namespace LifeCell3D
         private void Form1_Click(object sender, EventArgs e)
         {
             /*
-           
-                g.DrawLine(axesBrush, 250, 250, 500, 250); // ось Х
-                g.DrawLine(axesBrush, 250, 250, 250, 1); // ось Y
-                g.DrawLine(axesBrush, 250, 250, X1(0, 0, 50), Y1(0, 0, 50)); // ось Z  
 
-            if (generation == 0)
-            {
+                 g.DrawLine(axesBrush, 250, 250, 500, 250); // ось Х
+                 g.DrawLine(axesBrush, 250, 250, 250, 1); // ось Y
+                 g.DrawLine(axesBrush, 250, 250, X1(0, 0, 50), Y1(0, 0, 50)); // ось Z  
 
-                for (int z = 0; z < max; z++)  // инициализация массива заполнением полей
-                {
-                    for (int y = 0; y < max; y++)
-                    {
-                        for (int x = 0; x < max; x++)
-                        {
-                            Single r = rnd.Next(0, 100);
+            */
 
-                            if (r > procent)
-                            {
-                                Matrix[x, y, z].currentStatus = true;
-                                CreateDot(x, y, z, true);
-                            }
+             if (generation == 0)
+             {
 
-                            // else Matrix[x, y, z].currentStatus = false;  // надо, не надо - хз
-                        }
+                 for (int z = 0; z < max; z++)  // инициализация массива заполнением полей
+                 {
+                     for (int y = 0; y < max; y++)
+                     {
+                         for (int x = 0; x < max; x++)
+                         {
+                             Single r = rnd.Next(0, 100);
+
+                             if (r > procent)
+                             {
+                                 Matrix[x, y, z].currentStatus = true;
+                                 CreateDot(x, y, z, true);
+                             }
+
+                             // else Matrix[x, y, z].currentStatus = false;  // надо, не надо - хз
+                         }
 
 
-                    }
+                     }
 
-                }
-                
-            }
+                 }
+
+             }
+             
 
             generation = 1;
 
             if (timer1.Enabled == true) timer1.Enabled = false;
-            else  */
+            else  
             timer1.Enabled = true;
 
             
@@ -179,6 +185,8 @@ namespace LifeCell3D
             GL.Color3(Color.Red);
 
             GL.Vertex2(x, y);
+            GL.Vertex2(x + 3, y + 3);
+
 
             
         
@@ -218,6 +226,8 @@ namespace LifeCell3D
                     }
                 }
             }
+
+        
 
             for (int z = 0; z < max; z++)  // второй обход массива
             {
