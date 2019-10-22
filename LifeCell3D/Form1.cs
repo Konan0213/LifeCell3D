@@ -104,7 +104,7 @@ namespace LifeCell3D
 
         private void Form1_Click(object sender, EventArgs e)
         {
-
+            /*
            
                 g.DrawLine(axesBrush, 250, 250, 500, 250); // ось Х
                 g.DrawLine(axesBrush, 250, 250, 250, 1); // ось Y
@@ -140,7 +140,8 @@ namespace LifeCell3D
             generation = 1;
 
             if (timer1.Enabled == true) timer1.Enabled = false;
-            else timer1.Enabled = true;
+            else  */
+            timer1.Enabled = true;
 
             
         }
@@ -171,13 +172,16 @@ namespace LifeCell3D
 
         {
 
-            if (onoff) g.FillEllipse(redBrush, X1(x,y,z), Y1(x,y,z), 3, 3);
+            /* if (onoff) g.FillEllipse(redBrush, X1(x,y,z), Y1(x,y,z), 3, 3);
 
-            else g.FillEllipse(neutralBrush, X1(x, y, z), Y1(x, y, z), 3, 3);
+            else g.FillEllipse(neutralBrush, X1(x, y, z), Y1(x, y, z), 3, 3); */
+
+            GL.Color3(Color.Red);
+
+            GL.Vertex2(x, y);
 
             
-
-
+        
         }
 
         static void Life(int gen)
