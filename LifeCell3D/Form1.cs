@@ -29,9 +29,9 @@ namespace LifeCell3D
 
         public static int max = 30;
 
-        public static int qBorn = 3;
-
-        public static int qDead = 4;
+        public static int qBorn = 2;
+    
+        public static int qDead = 3;
 
         public static int procent = 98; // процент свободного места в стартовом заполнении
 
