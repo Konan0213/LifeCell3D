@@ -8,12 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using OpenTK;
-
-using OpenTK.Graphics.OpenGL;
-
-
-
 
 
 
@@ -27,27 +21,26 @@ namespace LifeCell3D
         public static SolidBrush redBrush;
         public static SolidBrush neutralBrush;
         public static Pen axesBrush;
-
-       
+               
 
         public static int generation; // Отсчет поколений
 
         public static int MaxXYZ = 250;
 
-        public static int max = 5;
+        public static int max = 30;
 
-        public static int qBorn = 2;
+        public static int qBorn = 3;
 
-        public static int qDead = 8;
+        public static int qDead = 5;
 
-        public static int procent = 5;
+        public static int procent = 97; // процент свободного места в стартовом заполнении
 
          public struct Cell
 
         { 
             public bool currentStatus;
 
-            public bool nextStatus;
+            public bool newStatus;
 
         }
 
@@ -56,64 +49,35 @@ namespace LifeCell3D
 
         public Random rnd = new Random();
 
-        bool loaded = false; // флажок загрузки окна
-
+       
 
         public Form1() // конструктор класса Form1
         {
             InitializeComponent();  // оставляем
             redBrush = new SolidBrush(Color.Blue);
-            neutralBrush = new SolidBrush(this.BackColor);
+            neutralBrush = new SolidBrush(BackColor);
             axesBrush = new Pen(Color.Black, 3);
                  
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            // g = this.CreateGraphics();
+            g = this.CreateGraphics();
             generation = 0;
         }
 
-        private void glControl1_Load(object sender, EventArgs e)
-        {
-            loaded = true;// флажок "форма загружена"
-
-            GL.ClearColor(Color.SkyBlue);
-            GL.Enable(EnableCap.DepthTest); // дальние к точке наблюдения элементы перекрываются ближними
-
-            Matrix4 p = Matrix4.CreatePerspectiveFieldOfView((float)(80 * Math.PI / 180), 1, 20, 500); // матрица Фруструма: 
-
-
-            GL.MatrixMode(MatrixMode.Projection);
-            GL.LoadMatrix(ref p);
-
-            Matrix4 modelview = Matrix4.LookAt(70, 70, 70, 0, 0, 0, 0, 1, 0);
-            GL.MatrixMode(MatrixMode.Modelview);
-            GL.LoadMatrix(ref modelview);
-        }
-
-        private void glControl1_Paint(object sender, PaintEventArgs e) // метод при открытии или изменении размеров
-        {
-            if (!loaded)  // если форма не загружена - выходим
-                return;
-
-            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit); // Переходим в режим проекции, и задаем эту матрицу
-
-            glControl1.SwapBuffers();
-
-        }
+        
 
 
 
         private void Form1_Click(object sender, EventArgs e)
-        {
-            /*
+        {          
 
                  g.DrawLine(axesBrush, 250, 250, 500, 250); // ось Х
                  g.DrawLine(axesBrush, 250, 250, 250, 1); // ось Y
                  g.DrawLine(axesBrush, 250, 250, X1(0, 0, 50), Y1(0, 0, 50)); // ось Z  
 
-            */
+            
 
              if (generation == 0)
              {
@@ -126,22 +90,20 @@ namespace LifeCell3D
                          {
                              Single r = rnd.Next(0, 100);
 
-                             if (r > procent)
+                            Matrix[x, y, z].currentStatus = false;
+
+                            if (r > procent)
                              {
-                                 Matrix[x, y, z].currentStatus = true;
+                                 Matrix[x, y, z].newStatus = true;
                                  CreateDot(x, y, z, true);
                              }
-
-                             // else Matrix[x, y, z].currentStatus = false;  // надо, не надо - хз
+                                                         
                          }
-
-
                      }
-
                  }
-
              }
              
+
 
             generation = 1;
 
@@ -155,15 +117,10 @@ namespace LifeCell3D
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-
-
-           
-
             Life(generation);
             generation++;
             Gen1.Text = Convert.ToString(generation);
-
-           
+                 
         }
 
         static int X1 (int x, int y, int z) 
@@ -178,17 +135,9 @@ namespace LifeCell3D
 
         {
 
-            /* if (onoff) g.FillEllipse(redBrush, X1(x,y,z), Y1(x,y,z), 3, 3);
+            if (onoff) g.FillEllipse(redBrush, X1(x,y,z), Y1(x,y,z), 4, 4);
 
-            else g.FillEllipse(neutralBrush, X1(x, y, z), Y1(x, y, z), 3, 3); */
-
-            GL.Color3(Color.Red);
-
-            GL.Vertex2(x, y);
-            GL.Vertex2(x + 3, y + 3);
-
-
-            
+            else g.FillEllipse(neutralBrush, X1(x, y, z), Y1(x, y, z), 4, 4);                      
         
         }
 
@@ -196,60 +145,41 @@ namespace LifeCell3D
 
         {
             int quant; // количество в окрестности Мура
-            bool whoThere; // статус текущей ячейки
             
+            bool changeFlag; // признак изменения статуса ячейки 
 
-            for (int z = 0; z < max; z++)  // первый обход массива, оценка ситуации, перекладка значений
+
+            for (int z = 0; z < max; z++)  
             {
                 for (int y = 0; y < max; y++)
                 {
                     for (int x = 0; x < max; x++)
 
-                     {
-
-                        
-
-
-                        whoThere = Matrix[x, y, z].currentStatus;
-
-                        CreateDot(x, y, z, whoThere);
-
-                        quant = NeighborQuantity(x, y, z);                                                  
-
-                        if ((quant < qBorn - 1) || (quant >= qDead)) whoThere = false; // одиночество или перенаселение с учетом в количестве самой центральной ячейки
-
-                        if ((quant >= qBorn) && (quant < qDead)) whoThere = true; // если количество больше , то размножение
-
-                        // если не подпало ни под одно из условий - новый статус приравнивается к старому, whoThere не меняется
-                        
-                        Matrix[x, y, z].nextStatus = whoThere; // в следующий проход новоназначенное состояние ячейки станет текущим и должно быть отображено
-                    }
-                }
-            }
-
-        
-
-            for (int z = 0; z < max; z++)  // второй обход массива
-            {
-                for (int y = 0; y < max; y++)
-                {
-                    for (int x = 0; x < max; x++)
                     {
 
-                       
+                        if (Matrix[x, y, z].currentStatus != Matrix[x, y, z].newStatus) changeFlag = true; // статус менялся
 
-                        whoThere = Matrix[x, y, z].nextStatus;
+                        else changeFlag = false;
 
-                        // CreateDot(x, y, z, whoThere);
+                        Matrix[x, y, z].currentStatus = Matrix[x, y, z].newStatus;
+                        
+                        if (changeFlag) CreateDot(x, y, z, Matrix[x, y, z].currentStatus); // если статус менялся - прорисовываем/затираем точку
 
-                        Matrix[x, y, z].currentStatus = whoThere; // новый статус закрепляется как действующий
+                        // вычисление и присваивание статуса на следующий проход
+
+                        quant = NeighborQuantity(x, y, z);
+
+                        if ((quant == qBorn) && (Matrix[x, y, z].currentStatus == false)) Matrix[x, y, z].newStatus = true; // если количество начальное для рождения, и поле пустое, то размножение
+                        
+                        if ((quant < qBorn - 1) || (quant >= qDead)) Matrix[x, y, z].newStatus = false; // одиночество или перенаселение с учетом в количестве самой центральной ячейки
+
+                        
+                        // если не подпало ни под одно из условий - статус  не меняется
+
                     }
                 }
-
             }
-
-        }
-                                         
+        }                                 
 
         static int NeighborQuantity(int x, int y, int z)
 
@@ -270,7 +200,7 @@ namespace LifeCell3D
                             if (Matrix[xx, yy, zz].currentStatus) quantity++;
                         }     // ячейка заполнена
 
-                        //  if (Matrix[xx, yy, zz].currentStatus) quantity++; // ячейка заполнена
+                        
                     }
                 }
             }
